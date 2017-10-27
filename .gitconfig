@@ -1,0 +1,6 @@
+[user]
+	name = Joel Frank
+	email = joel.frank@rub.de
+[core]
+	editor = nvim
+	excludesfile = /Users/joelfrank/.global_gitignore

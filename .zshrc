@@ -21,6 +21,29 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+# alias
 alias p="cd ~/projects"
 alias la="ls -la"
 alias bubu="brew update && brew upgrade"
+
+# edit common stuff
+alias vimrc="vim ~/.vimrc"
+alias zshrc="vim ~/.zshrc"
+
+# set neovim as standard
+alias vim='nvim'
+alias vi='nvim'
+
+# Go
+export GOPATH=$HOME/projects/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+
+# Python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export WORKON_HOME="~/projects/.virtual_envs"
+export PROJECT_HOME="~/projects"
+
+eval "$(pyenv init -)"
+pyenv virtualenvwrapper_lazy
