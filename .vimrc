@@ -5,6 +5,13 @@ call plug#begin('~/.vim/plugged')
 	Plug 'vim-airline/vim-airline'
 	Plug 'vim-airline/vim-airline-themes'
 
+  " numbertoggle
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'
+
+  " NERDTree
+  Plug 'scrooloose/nerdtree'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+
   " Linter
   Plug 'vim-syntastic/syntastic'
 
@@ -20,18 +27,15 @@ call plug#begin('~/.vim/plugged')
   " Snippets
   Plug 'SirVer/ultisnips'
 
-  " numbertoggle
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'
-
   " Syntax themes
   Plug 'flazz/vim-colorschemes'
 
   " Rust
-  Plug 'rust-lang/rust.vim'
-  Plug 'sebastianmarkow/deoplete-rust'
+  Plug 'rust-lang/rust.vim', { 'for': 'rs' }
+  Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rs' }
 
   " Python
-  Plug 'zchee/deoplete-jedi'
+  Plug 'zchee/deoplete-jedi', { 'for': 'py' }
 call plug#end()
 
 "=====================================================
@@ -113,6 +117,65 @@ colorscheme hybrid_material
 " Rust fmt
 
 "=====================================================
+"===================== Mappings ======================
+let mapleader = ","
+
+" Some useful quickfix shortcuts for quickfix
+map <C-n> :cn<CR>
+map <C-m> :cp<CR>
+nnoremap <leader>a :cclose<CR>
+
+" put quickfix window always to the bottom
+autocmd FileType qf wincmd J
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END
+
+" Fast saving
+nnoremap <leader>w :w!<cr>
+nnoremap <silent> <leader>q :q!<CR>
+
+" Center the screen
+nnoremap <space> zz
+
+" Remove search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+
+" Close all but the current one
+nnoremap <leader>o :only<CR>
+
+" Better split switching
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Visual linewise up and down by default (and use gj gk to go quicker)
+noremap <Up> gk
+noremap <Down> gj
+noremap j gj
+noremap k gk
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Same when moving up and down
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+
+" Remap H and L (top, bottom of screen to left and right end of line)
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L g_
+
+" Do not show stupid q: window
+map q: :q
+
+"=====================================================
 "===================== Plugins =======================
 
 "===================== Syntastic =====================
@@ -167,6 +230,13 @@ au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " 
 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
+
+" ==================== NerdTree ====================
+" For toggling
+noremap <Leader>n :NERDTreeToggle<cr>
+noremap <Leader>f :NERDTreeFind<cr>
+
+let NERDTreeShowHidden=1
 
 
 "=====================================================

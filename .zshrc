@@ -29,15 +29,19 @@ alias bubu="brew update && brew upgrade"
 # edit common stuff
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
+alias resource="source ~/.vimrc"
 
 # set neovim as standard
 alias vim='nvim'
 alias vi='nvim'
 
+# set Editor
+export EDITOR='nvim'
+
 # Go
-export GOPATH=$HOME/projects/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
+export GOPATH="$HOME/projects/go"
+export GOBIN="$GOPATH/bin"
+export PATH="$PATH:$GOBIN"
 
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
