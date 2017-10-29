@@ -175,6 +175,9 @@ vnoremap L g_
 " Do not show stupid q: window
 map q: :q
 
+" Enter automatically into the files directory
+autocmd BufEnter * silent! lcd %:p:h
+
 "=====================================================
 "===================== Plugins =======================
 
