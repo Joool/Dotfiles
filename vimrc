@@ -8,10 +8,15 @@ call plug#begin('~/.vim/plugged')
   " numbertoggle
   Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
+  " show git diff
+  Plug 'mhinz/vim-signify'
+
   " NERDTree
   Plug 'scrooloose/nerdtree'
   Plug 'Xuyuanp/nerdtree-git-plugin'
 
+  " TODO: group programming stuff into groups and laod
+  " linter/autocomplete/snippets on demand
   " Linter
   Plug 'vim-syntastic/syntastic'
 
@@ -31,11 +36,15 @@ call plug#begin('~/.vim/plugged')
   Plug 'flazz/vim-colorschemes'
 
   " Rust
-  Plug 'rust-lang/rust.vim', { 'for': 'rs' }
-  Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rs' }
+  Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+  Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rust' }
+  Plug 'wagnerf42/vim-clippy', { 'for': 'rust' }
 
   " Python
-  Plug 'zchee/deoplete-jedi', { 'for': 'py' }
+  Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+
+  " Solidity
+  Plug 'tomlion/vim-solidity'
 call plug#end()
 
 "=====================================================
@@ -77,8 +86,8 @@ set updatetime=300
 set pumheight=10             " Completion window max size
 
 set expandtab
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 
 
 "http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
@@ -191,9 +200,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" fix rustc linter bug
-let g:syntastic_rust_checkers = ['cargo']
-
 " ==================== UltiSnips ====================
 function! g:UltiSnips_Complete()
   call UltiSnips#ExpandSnippet()
@@ -234,7 +240,7 @@ au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
 
-" ==================== NerdTree ====================
+" ==================== NerdTree ======================
 " For toggling
 noremap <Leader>n :NERDTreeToggle<cr>
 noremap <Leader>f :NERDTreeFind<cr>
@@ -242,10 +248,16 @@ noremap <Leader>f :NERDTreeFind<cr>
 let NERDTreeShowHidden=1
 
 
+" ==================== SIGNIFY =======================
+let g:signify_vcs_list=['git']
+
 "=====================================================
 "===================== Language Specific =============
 
 "===================== Rust ==========================
 let g:rustfmt_autosave = 1
-let g:deoplete#sources#rust#racer_binary='~/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='~/.config/rust/src'
+let g:deoplete#sources#rust#racer_binary='/Users/joelfrank/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='/Users/joelfrank/.config/rust/src'
+
+" fix rustc linter bug
+let g:syntastic_rust_checkers = ['cargo']

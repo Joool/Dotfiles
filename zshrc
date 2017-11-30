@@ -1,3 +1,6 @@
+. $(brew --prefix)/etc/profile.d/z.sh
+alias j='z'
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -17,7 +20,7 @@ export UPDATE_ZSH_DAYS=7
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-plugins=(git)
+plugins=(git homebrew docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -29,7 +32,7 @@ alias bubu="brew update && brew upgrade"
 # edit common stuff
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
-alias resource="source ~/.vimrc"
+alias resource="source ~/.zshrc"
 
 # set neovim as standard
 alias vim='nvim'
@@ -51,3 +54,6 @@ export PROJECT_HOME="~/projects"
 
 eval "$(pyenv init -)"
 pyenv virtualenvwrapper_lazy
+
+# Java
+export JAVA_HOME="$(/usr/libexec/java_home)"
