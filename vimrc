@@ -37,7 +37,7 @@ call plug#begin('~/.vim/plugged')
 
   " Rust
   Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-  Plug 'sebastianmarkow/deoplete-rust', { 'for': 'rust' }
+  Plug 'racer-rust/vim-racer', { 'for': 'rust' }
   Plug 'wagnerf42/vim-clippy', { 'for': 'rust' }
 
   " Python
@@ -45,6 +45,9 @@ call plug#begin('~/.vim/plugged')
 
   " Solidity
   Plug 'tomlion/vim-solidity'
+
+  " toml
+  Plug 'cespare/vim-toml'
 call plug#end()
 
 "=====================================================
@@ -123,8 +126,6 @@ inoremap <C-c> <Esc><Esc>
 " colorscheme
 colorscheme hybrid_material
 
-" Rust fmt
-
 "=====================================================
 "===================== Mappings ======================
 let mapleader = ","
@@ -153,6 +154,9 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " Close all but the current one
 nnoremap <leader>o :only<CR>
+
+" Switch to last buffer
+nnoremap <leader>b :b#<CR>
 
 " Better split switching
 map <C-j> <C-W>j
@@ -255,9 +259,18 @@ let g:signify_vcs_list=['git']
 "===================== Language Specific =============
 
 "===================== Rust ==========================
+let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
-let g:deoplete#sources#rust#racer_binary='/Users/joelfrank/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='/Users/joelfrank/.config/rust/src'
 
-" fix rustc linter bug
+" use cargo as rust linter
 let g:syntastic_rust_checkers = ['cargo']
+
+" racer config
+set hidden
+let g:racer_cmd = "/Users/joelfrank/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)

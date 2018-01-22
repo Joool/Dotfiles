@@ -48,12 +48,15 @@ export PATH="$PATH:$GOBIN"
 
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PATH:$PYENV_ROOT/bin"
 export WORKON_HOME="~/projects/.virtual_envs"
 export PROJECT_HOME="~/projects"
 
 eval "$(pyenv init -)"
-pyenv virtualenvwrapper_lazy
+# pyenv virtualenvwrapper_lazy
 
 # Java
 export JAVA_HOME="$(/usr/libexec/java_home)"
+
+# Rust
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
