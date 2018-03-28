@@ -11,9 +11,8 @@ call plug#begin('~/.vim/plugged')
   " show git diff
   Plug 'mhinz/vim-signify'
 
-  " NERDTree
-  Plug 'scrooloose/nerdtree'
-  Plug 'Xuyuanp/nerdtree-git-plugin'
+  " fuzzy finder
+  Plug '/usr/local/opt/fzf'
 
   " TODO: group programming stuff into groups and laod
   " linter/autocomplete/snippets on demand
@@ -190,6 +189,11 @@ map q: :q
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
+
+
+" Terminal mode
+nnoremap <leader>t :vsplit term://zsh <return>
+tnoremap <leader>c <C-\><C-n>
 
 "=====================================================
 "===================== Plugins =======================
