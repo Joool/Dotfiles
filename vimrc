@@ -1,4 +1,3 @@
-" install neovim python package
 " remember to set init file, see :h nvim-from-vim
 call plug#begin('~/.vim/plugged')
   " Statusline
@@ -13,11 +12,21 @@ call plug#begin('~/.vim/plugged')
 
   " fuzzy finder
   Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf.vim'
+
+  " tabcompletion
+  Plug 'ervandew/supertab'
+
+  " Language Server
+  Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
   " TODO: group programming stuff into groups and laod
   " linter/autocomplete/snippets on demand
   " Linter
-  Plug 'vim-syntastic/syntastic'
+  Plug 'w0rp/ale'
 
   " Autocomplete
   if has('nvim')
@@ -28,25 +37,20 @@ call plug#begin('~/.vim/plugged')
     Plug 'roxma/vim-hug-neovim-rpc'
   endif
 
-  " Snippets
-  Plug 'SirVer/ultisnips'
-
   " Syntax themes
   Plug 'flazz/vim-colorschemes'
 
   " Rust
   Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-  Plug 'racer-rust/vim-racer', { 'for': 'rust' }
-  Plug 'wagnerf42/vim-clippy', { 'for': 'rust' }
 
   " Python
   Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
   " Solidity
-  Plug 'tomlion/vim-solidity'
+  Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
 
   " toml
-  Plug 'cespare/vim-toml'
+  Plug 'cespare/vim-toml', { 'for': 'toml' }
 call plug#end()
 
 "=====================================================
@@ -122,6 +126,8 @@ autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 " colorscheme
 colorscheme hybrid_material
 
+set hidden
+
 "=====================================================
 "===================== Mappings ======================
 let mapleader = ","
@@ -132,7 +138,8 @@ inoremap <C-c> <Esc><Esc>
 " Some useful quickfix shortcuts for quickfix
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
-nnoremap <leader>a :cclose<CR>
+nnoremap <leader>a :cw<CR>
+nnoremap <leader>A :cclose<CR>
 
 " put quickfix window always to the bottom
 autocmd FileType qf wincmd J
@@ -191,55 +198,43 @@ map q: :q
 nnoremap <leader>l :vsplit term://zsh <return>
 tnoremap <leader>c <C-\><C-n>
 
+" Move line up down with A-j A-k, on mac we use the symbols created by
+" pressing A-j...
+nnoremap º :m .+1<CR>==
+nnoremap ∆ :m .-2<CR>==
+inoremap º <Esc>:m .+1<CR>==gi
+inoremap ∆ <Esc>:m .-2<CR>==gi
+vnoremap º :m '>+1<CR>gv=gv
+vnoremap ∆ :m '<-2<CR>gv=gv
+
 "=====================================================
 "===================== Plugins =======================
 
-"===================== Syntastic =====================
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" ==================== vimairline ====================
+let g:airline#extensions#tabline#enabled = 1
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" ==================== Ale ===========================
+let g:ale_linters = {
+  \   'rust': ['rls'],
+  \}
 
-" ==================== UltiSnips ====================
-function! g:UltiSnips_Complete()
-  call UltiSnips#ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips#JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif
-  endif
-  return ""
-endfunction
+let g:airline#extensions#ale#enabled = 1
 
-function! g:UltiSnips_Reverse()
-  call UltiSnips#JumpBackwards()
-  if g:ulti_jump_backwards_res == 0
-    return "\<C-P>"
-  endif
+" use quickfix window instead of loclist
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
 
-  return ""
-endfunction
+" only lint on save
+let g:ale_lint_on_text_changed = 'never'
 
+" ==================== Language Server ===============
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ }
 
-if !exists("g:UltiSnipsJumpForwardTrigger")
-  let g:UltiSnipsJumpForwardTrigger = "<tab>"
-endif
-
-if !exists("g:UltiSnipsJumpBackwardTrigger")
-  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-endif
-
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
@@ -247,10 +242,10 @@ let g:deoplete#enable_at_startup = 1
 " ==================== SIGNIFY =======================
 let g:signify_vcs_list=['git']
 
-" ==================== FZF ===========================
-nnoremap <leader>t :FZF<CR>
-nnoremap <leader>T :FZF 
+" ==================== Supertab ======================
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" ==================== FZF ===========================
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
   copen
@@ -285,6 +280,13 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
+let g:fzf_buffers_jump = 1
+
+nnoremap ü :FZF<CR>
+nnoremap Ü :FZF 
+
+nnoremap <silent> <leader>B :FZF<CR>
+
 "=====================================================
 "===================== Language Specific =============
 
@@ -292,18 +294,3 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 " rustup component add rustfmt-preview --toolchain=nightly
 let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
-
-" use cargo as rust linter
-let g:syntastic_rust_checkers = ['cargo', 'clippy']
-" let g:syntastic_rust_cargo_args = "--tests"
-
-" racer config
-" https://github.com/racer-rust/racer
-set hidden
-let g:racer_cmd = "/Users/joelfrank/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
-
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
