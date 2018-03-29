@@ -119,15 +119,15 @@ autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 
-" rebind escape to ctrl-c
-inoremap <C-c> <Esc><Esc>
-
 " colorscheme
 colorscheme hybrid_material
 
 "=====================================================
 "===================== Mappings ======================
 let mapleader = ","
+
+" rebind escape to ctrl-c
+inoremap <C-c> <Esc><Esc>
 
 " Some useful quickfix shortcuts for quickfix
 map <C-n> :cn<CR>
@@ -187,12 +187,8 @@ vnoremap L g_
 " Do not show stupid q: window
 map q: :q
 
-" Enter automatically into the files directory
-autocmd BufEnter * silent! lcd %:p:h
-
-
 " Terminal mode
-nnoremap <leader>t :vsplit term://zsh <return>
+nnoremap <leader>l :vsplit term://zsh <return>
 tnoremap <leader>c <C-\><C-n>
 
 "=====================================================
@@ -248,16 +244,46 @@ au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
 
-" ==================== NerdTree ======================
-" For toggling
-noremap <Leader>n :NERDTreeToggle<cr>
-noremap <Leader>f :NERDTreeFind<cr>
-
-let NERDTreeShowHidden=1
-
-
 " ==================== SIGNIFY =======================
 let g:signify_vcs_list=['git']
+
+" ==================== FZF ===========================
+nnoremap <leader>t :FZF<CR>
+nnoremap <leader>T :FZF 
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+" disable statusline in fzf terminal mode
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 "=====================================================
 "===================== Language Specific =============
@@ -268,7 +294,8 @@ let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
 
 " use cargo as rust linter
-let g:syntastic_rust_checkers = ['cargo']
+let g:syntastic_rust_checkers = ['cargo', 'clippy']
+" let g:syntastic_rust_cargo_args = "--tests"
 
 " racer config
 " https://github.com/racer-rust/racer
@@ -280,11 +307,3 @@ au FileType rust nmap gd <Plug>(rust-def)
 au FileType rust nmap gs <Plug>(rust-def-split)
 au FileType rust nmap gx <Plug>(rust-def-vertical)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
-
-
-"===================== Tex ==========================
-" LaTeX (rubber) macro for compiling
-au FileType tex nmap <leader>c :w<CR>:!rubber --pdf all %<CR>
-
-" View PDF macro; '%:r' is current file's root (base) name.
-au FileType tex nmap <leader>v :!open %:r.pdf &<CR><CR>
