@@ -1,8 +1,8 @@
 " remember to set init file, see :h nvim-from-vim
 call plug#begin('~/.vim/plugged')
   " Statusline
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
 
   " numbertoggle
   Plug 'jeffkreeftmeijer/vim-numbertoggle'
@@ -17,16 +17,10 @@ call plug#begin('~/.vim/plugged')
   " tabcompletion
   Plug 'ervandew/supertab'
 
-  " Language Server
-  Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
   " TODO: group programming stuff into groups and laod
   " linter/autocomplete/snippets on demand
   " Linter
-  Plug 'w0rp/ale'
+  Plug 'vim-syntastic/syntastic'
 
   " Autocomplete
   if has('nvim')
@@ -50,7 +44,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
 
   " toml
-  Plug 'cespare/vim-toml', { 'for': 'toml' }
+  Plug 'cespare/vim-toml'
 call plug#end()
 
 "=====================================================
@@ -123,17 +117,14 @@ autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 
-" colorscheme
-colorscheme hybrid_material
+" rebind escape to ctrl-c
+inoremap <C-c> <Esc><Esc>
 
 set hidden
 
 "=====================================================
 "===================== Mappings ======================
 let mapleader = ","
-
-" rebind escape to ctrl-c
-inoremap <C-c> <Esc><Esc>
 
 " Some useful quickfix shortcuts for quickfix
 map <C-n> :cn<CR>
@@ -194,8 +185,12 @@ vnoremap L g_
 " Do not show stupid q: window
 map q: :q
 
+" Enter automatically into the files directory
+autocmd BufEnter * silent! lcd %:p:h
+
+
 " Terminal mode
-nnoremap <leader>l :vsplit term://zsh <return>
+nnoremap <leader>t :vsplit term://zsh <return>
 tnoremap <leader>c <C-\><C-n>
 
 " Move line up down with A-j A-k, on mac we use the symbols created by
@@ -210,31 +205,21 @@ vnoremap ∆ :m '<-2<CR>gv=gv
 "=====================================================
 "===================== Plugins =======================
 
+" ==================== colorscheme ===================
+colorscheme hybrid_material
+
 " ==================== vimairline ====================
 let g:airline#extensions#tabline#enabled = 1
 
-" ==================== Ale ===========================
-let g:ale_linters = {
-  \   'rust': ['rls'],
-  \}
+"===================== Syntastic =====================
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-let g:airline#extensions#ale#enabled = 1
-
-" use quickfix window instead of loclist
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-" only lint on save
-let g:ale_lint_on_text_changed = 'never'
-
-" ==================== Language Server ===============
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ }
-
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
@@ -242,10 +227,10 @@ let g:deoplete#enable_at_startup = 1
 " ==================== SIGNIFY =======================
 let g:signify_vcs_list=['git']
 
-" ==================== Supertab ======================
-let g:SuperTabDefaultCompletionType = "<c-n>"
-
 " ==================== FZF ===========================
+nnoremap <leader>t :FZF<CR>
+nnoremap <leader>T :FZF 
+
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
   copen
@@ -280,13 +265,6 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
-let g:fzf_buffers_jump = 1
-
-nnoremap ü :FZF<CR>
-nnoremap Ü :FZF 
-
-nnoremap <silent> <leader>B :FZF<CR>
-
 "=====================================================
 "===================== Language Specific =============
 
@@ -294,3 +272,17 @@ nnoremap <silent> <leader>B :FZF<CR>
 " rustup component add rustfmt-preview --toolchain=nightly
 let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
+
+" use cargo as rust linter
+let g:syntastic_rust_checkers = ['cargo', 'clippy']
+
+" racer config
+" https://github.com/racer-rust/racer
+set hidden
+let g:racer_cmd = "/Users/joelfrank/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
