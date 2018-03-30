@@ -1,8 +1,8 @@
 " remember to set init file, see :h nvim-from-vim
 call plug#begin('~/.vim/plugged')
   " Statusline
-	Plug 'vim-airline/vim-airline'
-	Plug 'vim-airline/vim-airline-themes'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
 
   " numbertoggle
   Plug 'jeffkreeftmeijer/vim-numbertoggle'
@@ -50,7 +50,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
 
   " toml
-  Plug 'cespare/vim-toml', { 'for': 'toml' }
+  Plug 'cespare/vim-toml'
 call plug#end()
 
 "=====================================================
@@ -122,9 +122,6 @@ autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
-
-" colorscheme
-colorscheme hybrid_material
 
 set hidden
 
@@ -210,6 +207,9 @@ vnoremap ∆ :m '<-2<CR>gv=gv
 "=====================================================
 "===================== Plugins =======================
 
+" ==================== colorscheme ===================
+colorscheme hybrid_material
+
 " ==================== vimairline ====================
 let g:airline#extensions#tabline#enabled = 1
 
@@ -224,9 +224,6 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
-" only lint on save
-let g:ale_lint_on_text_changed = 'never'
-
 " ==================== Language Server ===============
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
@@ -235,6 +232,8 @@ let g:LanguageClient_serverCommands = {
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+let g:LanguageClient_loggingLevel = 'DEBUG'
 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
