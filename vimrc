@@ -36,12 +36,13 @@ call plug#begin('~/.vim/plugged')
 
   " Rust
   Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+  Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
   " Python
   Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
   " Solidity
-  Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
+  Plug 'tomlion/vim-solidity'
 
   " toml
   Plug 'cespare/vim-toml'
@@ -185,12 +186,8 @@ vnoremap L g_
 " Do not show stupid q: window
 map q: :q
 
-" Enter automatically into the files directory
-autocmd BufEnter * silent! lcd %:p:h
-
-
 " Terminal mode
-nnoremap <leader>t :vsplit term://zsh <return>
+nnoremap <leader>l :vsplit term://zsh <return>
 tnoremap <leader>c <C-\><C-n>
 
 " Move line up down with A-j A-k, on mac we use the symbols created by
@@ -228,8 +225,8 @@ let g:deoplete#enable_at_startup = 1
 let g:signify_vcs_list=['git']
 
 " ==================== FZF ===========================
-nnoremap <leader>t :FZF<CR>
-nnoremap <leader>T :FZF 
+nnoremap ü :FZF<CR>
+nnoremap Ü :FZF 
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
@@ -264,6 +261,10 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+let g:fzf_buffers_jump = 1
+
+nnoremap <silent> <leader>B :FZF<CR>
 
 "=====================================================
 "===================== Language Specific =============
