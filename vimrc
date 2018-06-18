@@ -292,7 +292,9 @@ let g:fzf_buffers_jump = 1
 nnoremap ü :FZF<CR>
 nnoremap Ü :FZF 
 
-nnoremap <silent> <leader>B :FZF<CR>
+nnoremap <silent> <leader>B :Buffers<CR>
+nnoremap <silent> <leader>H :History:<CR>
+nnoremap <silent> <leader>h :History/<CR>
 
 "=====================================================
 "===================== Language Specific =============
