@@ -221,6 +221,9 @@ let g:syntastic_check_on_wq = 0
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
 
+" ==================== supertab ======================
+let g:SuperTabDefaultCompletionType = "<c-n>"
+
 " ==================== SIGNIFY =======================
 let g:signify_vcs_list=['git']
 
@@ -264,7 +267,12 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 
 let g:fzf_buffers_jump = 1
 
-nnoremap <silent> <leader>B :FZF<CR>
+" search open buffers
+nnoremap <silent> <leader>B :Buffers<CR> 
+" search command history
+nnoremap <silent> <leader>H :History:<CR>
+" seach search history
+nnoremap <silent> <leader>h :History/<CR>
 
 "=====================================================
 "===================== Language Specific =============
