@@ -17,6 +17,9 @@ call plug#begin('~/.vim/plugged')
   " tabcompletion
   Plug 'ervandew/supertab'
 
+  " Comment line(s) using t key
+  Plug 'tomtom/tcomment_vim'
+
   " Language Server
   Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
@@ -47,10 +50,13 @@ call plug#begin('~/.vim/plugged')
   Plug 'zchee/deoplete-jedi', { 'for': 'python' }
 
   " Solidity
-  Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
+  Plug 'tomlion/vim-solidity' 
 
   " toml
   Plug 'cespare/vim-toml'
+
+  " language pack with on demand loading
+  Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 "=====================================================
@@ -133,8 +139,8 @@ let mapleader = ","
 inoremap <C-c> <Esc><Esc>
 
 " Some useful quickfix shortcuts for quickfix
-map <C-n> :cn<CR>
-map <C-m> :cp<CR>
+map <C-a> :cn<CR>
+map <C-s> :cp<CR>
 nnoremap <leader>a :cw<CR>
 nnoremap <leader>A :cclose<CR>
 
@@ -173,6 +179,10 @@ noremap <Down> gj
 noremap j gj
 noremap k gk
 
+" Fast jumping up/down
+noremap J 5gj
+noremap K 5gk
+
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 nnoremap n nzzzv
@@ -181,6 +191,10 @@ nnoremap N Nzzzv
 " Same when moving up and down
 noremap <C-d> <C-d>zz
 noremap <C-u> <C-u>zz
+
+" bindings for quickly cycling the change list
+noremap <C-n> g,
+noremap <C-m> g;
 
 " Remap H and L (top, bottom of screen to left and right end of line)
 nnoremap H ^
@@ -207,8 +221,11 @@ vnoremap ∆ :m '<-2<CR>gv=gv
 "=====================================================
 "===================== Plugins =======================
 
-" ==================== colorscheme ===================
-colorscheme hybrid_material
+
+" ==================== tcomment ======================
+let g:tcomment_maps = 0
+nnoremap <silent> t :TComment<CR>j
+vnoremap <silent> t :TComment<CR>
 
 " ==================== vimairline ====================
 let g:airline#extensions#tabline#enabled = 1
@@ -219,18 +236,6 @@ let g:ale_linters = {
   \}
 
 let g:airline#extensions#ale#enabled = 1
-
-" use quickfix window instead of loclist
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-" only lint on save
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-
-" allways open list on errors
-let g:ale_open_list = 1
 
 " ==================== Language Server ===============
 let g:LanguageClient_serverCommands = {
@@ -303,3 +308,7 @@ nnoremap <silent> <leader>h :History/<CR>
 " rustup component add rustfmt-preview --toolchain=nightly
 let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
+
+" ==================== colorscheme ===================
+set background=dark         " Assume dark background
+colorscheme hybrid_material
