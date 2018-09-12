@@ -1,5 +1,8 @@
 " remember to set init file, see :h nvim-from-vim
 call plug#begin('~/.vim/plugged')
+  " better search
+  Plug 'haya14busa/incsearch.vim'
+
   " Statusline
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -17,18 +20,7 @@ call plug#begin('~/.vim/plugged')
   " tabcompletion
   Plug 'ervandew/supertab'
 
-  " Comment line(s) using t key
-  Plug 'tomtom/tcomment_vim'
-
-  " Language Server
-  Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-  " TODO: group programming stuff into groups and laod
-  " linter/autocomplete/snippets on demand
-  " Linter
+  " async linter
   Plug 'w0rp/ale'
 
   " Autocomplete
@@ -45,6 +37,7 @@ call plug#begin('~/.vim/plugged')
 
   " Rust
   Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+  Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
   " Python
   Plug 'zchee/deoplete-jedi', { 'for': 'python' }
@@ -55,8 +48,6 @@ call plug#begin('~/.vim/plugged')
   " toml
   Plug 'cespare/vim-toml'
 
-  " language pack with on demand loading
-  Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 "=====================================================
@@ -138,6 +129,10 @@ let mapleader = ","
 " rebind escape to ctrl-c
 inoremap <C-c> <Esc><Esc>
 
+" Stay in visual mode when shifting indentation
+xnoremap < <gv
+xnoremap > >gv
+
 " Some useful quickfix shortcuts for quickfix
 map <C-a> :cn<CR>
 map <C-s> :cp<CR>
@@ -206,6 +201,7 @@ vnoremap L g_
 map q: :q
 
 " Terminal mode
+nnoremap <leader>L :term <return>
 nnoremap <leader>l :vsplit term://zsh <return>
 tnoremap <leader>c <C-\><C-n>
 
@@ -221,6 +217,11 @@ vnoremap ∆ :m '<-2<CR>gv=gv
 "=====================================================
 "===================== Plugins =======================
 
+"===================== incsearch =====================
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
 
 " ==================== tcomment ======================
 let g:tcomment_maps = 0
@@ -231,22 +232,16 @@ vnoremap <silent> t :TComment<CR>
 let g:airline#extensions#tabline#enabled = 1
 
 " ==================== Ale ===========================
-let g:ale_linters = {
-  \   'rust': ['rls'],
-  \}
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+hi link ALEError Default
+hi link ALEWarning Default
+
+" Write this in your vimrc file
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
 
 let g:airline#extensions#ale#enabled = 1
-
-" ==================== Language Server ===============
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ }
-
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-
-let g:LanguageClient_loggingLevel = 'DEBUG'
 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
@@ -270,7 +265,7 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-let g:fzf_colors =
+" let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
   \ 'hl':      ['fg', 'Comment'],
@@ -301,14 +296,17 @@ nnoremap <silent> <leader>B :Buffers<CR>
 nnoremap <silent> <leader>H :History:<CR>
 nnoremap <silent> <leader>h :History/<CR>
 
-"=====================================================
-"===================== Language Specific =============
-
 "===================== Rust ==========================
 " rustup component add rustfmt-preview --toolchain=nightly
+let g:racer_experimental_completer = 1
+let g:racer_cmd = "/Users/joelfrank/.cargo/bin/racer"
+
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
 let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
 
 " ==================== colorscheme ===================
-set background=dark         " Assume dark background
 colorscheme hybrid_material
+let base16colorspace = 256

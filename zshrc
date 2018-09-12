@@ -60,6 +60,7 @@ export JAVA_HOME="$(/usr/libexec/java_home)"
 
 # Rust
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export RUSTC_WRAPPER=sccache
 
 # fzf 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
