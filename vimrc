@@ -23,6 +23,9 @@ call plug#begin('~/.vim/plugged')
   " async linter
   Plug 'w0rp/ale'
 
+  " tags for c/c++/rust
+  Plug 'majutsushi/tagbar'
+
   " Autocomplete
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -296,17 +299,18 @@ nnoremap <silent> <leader>B :Buffers<CR>
 nnoremap <silent> <leader>H :History:<CR>
 nnoremap <silent> <leader>h :History/<CR>
 
+"===================== Tags ==========================
+nnoremap <silent> <leader>t :TagbarToggle<CR>
+
 "===================== Rust ==========================
 " rustup component add rustfmt-preview --toolchain=nightly
 let g:racer_experimental_completer = 1
-let g:racer_cmd = "/Users/joelfrank/.cargo/bin/racer"
+let g:racer_cmd = "$HOME/.cargo/bin/racer"
 
 au FileType rust nmap gd <Plug>(rust-def)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
-let g:autofmt_autosave = 1
 let g:rustfmt_autosave = 1
-
+let g:autofmt_autosave = 1 
 " ==================== colorscheme ===================
 colorscheme hybrid_material
-let base16colorspace = 256

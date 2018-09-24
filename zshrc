@@ -4,13 +4,14 @@ alias j='z'
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+fpath+=~/.zfunc
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/joelfrank/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="eastwood"
+ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to change how often to auto-update (in days).
 export UPDATE_ZSH_DAYS=7
@@ -55,12 +56,10 @@ export PROJECT_HOME="~/projects"
 eval "$(pyenv init -)"
 # pyenv virtualenvwrapper_lazy
 
-# Java
-export JAVA_HOME="$(/usr/libexec/java_home)"
-
 # Rust
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 export RUSTC_WRAPPER=sccache
+export PATH="$PATH:/Users/joelfrank/.cargo/bin/racer" # explicitly add racer to the path
 
 # fzf 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
