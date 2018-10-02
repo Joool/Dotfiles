@@ -62,4 +62,5 @@ export RUSTC_WRAPPER=sccache
 export PATH="$PATH:/Users/joelfrank/.cargo/bin/racer" # explicitly add racer to the path
 
 # fzf 
+export FZF_DEFAULT_OPTS='--height 40% --border'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -291,11 +291,14 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 let g:fzf_buffers_jump = 1
+let g:fzf_layout = { 'window': '10split enew' }
 
+" keybindings
 nnoremap ü :FZF<CR>
 nnoremap Ü :FZF 
-
 nnoremap <silent> <leader>B :Buffers<CR>
+nnoremap <silent> <leader>g :GFiles<CR>
+nnoremap <silent> <leader>R :Rg<CR>
 nnoremap <silent> <leader>H :History:<CR>
 nnoremap <silent> <leader>h :History/<CR>
 
