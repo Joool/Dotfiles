@@ -15,6 +15,8 @@ brew "z"
 brew "fzf"
 brew "zsh"
 brew "coreutils"
-brew screen
-brew watch
-brew wget
+brew "screen"
+brew "watch"
+brew "wget"
+brew "httpie"
+brew "ctags"

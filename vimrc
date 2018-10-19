@@ -1,3 +1,11 @@
+" installs plug if not available
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
 " remember to set init file, see :h nvim-from-vim
 call plug#begin('~/.vim/plugged')
   " better search
@@ -23,7 +31,8 @@ call plug#begin('~/.vim/plugged')
   " async linter
   Plug 'w0rp/ale'
 
-  " tags for c/c++/rust
+  " ctags 
+  Plug 'craigemery/vim-autotag'
   Plug 'majutsushi/tagbar'
 
   " Autocomplete
@@ -120,10 +129,15 @@ autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
 autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
+autocmd BufNewFile,BufRead *.py
+    \ setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 
 set hidden
+
+" colorscheme 
+colorscheme hybrid_material
 
 "=====================================================
 "===================== Mappings ======================
@@ -303,6 +317,7 @@ nnoremap <silent> <leader>H :History:<CR>
 nnoremap <silent> <leader>h :History/<CR>
 
 "===================== Tags ==========================
+let g:autotagTagsFile=".tags"
 nnoremap <silent> <leader>t :TagbarToggle<CR>
 
 "===================== Rust ==========================
@@ -315,5 +330,5 @@ au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 let g:rustfmt_autosave = 1
 let g:autofmt_autosave = 1 
-" ==================== colorscheme ===================
-colorscheme hybrid_material
+
+"===================== Python ========================

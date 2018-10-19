@@ -11,7 +11,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="crunch"
 
 # Uncomment the following line to change how often to auto-update (in days).
 export UPDATE_ZSH_DAYS=7
@@ -48,18 +48,14 @@ export GOBIN="$GOPATH/bin"
 export PATH="$PATH:$GOBIN"
 
 # Python
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PATH:$PYENV_ROOT/bin"
 export WORKON_HOME="~/projects/.virtual_envs"
 export PROJECT_HOME="~/projects"
-
-eval "$(pyenv init -)"
-# pyenv virtualenvwrapper_lazy
+source /usr/local/bin/virtualenvwrapper.sh
 
 # Rust
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 export RUSTC_WRAPPER=sccache
-export PATH="$PATH:/Users/joelfrank/.cargo/bin/racer" # explicitly add racer to the path
+export PATH="$PATH:~/.cargo/bin/racer" # explicitly add racer to the path
 
 # fzf 
 export FZF_DEFAULT_OPTS='--height 40% --border'
