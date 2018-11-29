@@ -52,7 +52,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 
   " Python
-  Plug 'zchee/deoplete-jedi', { 'for': 'python' }
+  Plug 'zchee/deoplete-jedi'
 
   " Solidity
   Plug 'tomlion/vim-solidity' 
@@ -64,6 +64,10 @@ call plug#end()
 
 "=====================================================
 "===================== SETTINGS ======================
+if (has("termguicolors"))
+  set termguicolors
+endif
+
 set nocompatible
 filetype off
 filetype plugin indent on
@@ -137,7 +141,9 @@ autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 set hidden
 
 " colorscheme 
+set background=dark
 colorscheme hybrid_material
+let g:airline_theme = "hybrid"
 
 "=====================================================
 "===================== Mappings ======================
@@ -249,8 +255,6 @@ vnoremap <silent> t :TComment<CR>
 let g:airline#extensions#tabline#enabled = 1
 
 " ==================== Ale ===========================
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
 hi link ALEError Default
 hi link ALEWarning Default
 

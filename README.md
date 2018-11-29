@@ -4,7 +4,10 @@
 Install two virtualenvs and setup ABSOLUTE path in neovim init, currently installed:
 	- neovim client
 	- jedi
-
+	- flake8
+	- isort
+	- autopep8
+	- vulture
 ```
 	let g:python_host_prog = 'PATH-TO-VIRTUALENV/.virtual_envs/neovim2/bin/python'
 	let g:python3_host_prog = 'PATH-TO-VIRTUALENV/.virtual_envs/neovim3/bin/python'
