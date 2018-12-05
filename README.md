@@ -13,8 +13,6 @@ Install two virtualenvs and setup ABSOLUTE path in neovim init, currently instal
 	let g:python3_host_prog = 'PATH-TO-VIRTUALENV/.virtual_envs/neovim3/bin/python'
 ```
 
-
-
 ### Misc
 
 GDB on Mac:

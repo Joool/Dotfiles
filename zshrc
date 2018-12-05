@@ -34,6 +34,7 @@ alias bubu="brew update && brew upgrade"
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias resource="source ~/.zshrc"
+alias scratch='vim $(echo $TMPDIR)/scratch'
 
 # set neovim as standard
 alias vim='nvim'
@@ -48,9 +49,13 @@ export GOBIN="$GOPATH/bin"
 export PATH="$PATH:$GOBIN"
 
 # Python
-export WORKON_HOME="~/projects/.virtual_envs"
-export PROJECT_HOME="~/projects"
-source /usr/local/bin/virtualenvwrapper.sh
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+eval "$(pyenv virtualenv-init -)"
 
 # Rust
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
@@ -60,3 +65,4 @@ export PATH="$PATH:~/.cargo/bin/racer" # explicitly add racer to the path
 # fzf 
 export FZF_DEFAULT_OPTS='--height 40% --border'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
