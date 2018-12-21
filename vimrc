@@ -134,7 +134,7 @@ autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
 autocmd BufNewFile,BufRead *.py
-    \ setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+    \ setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent fileformat=unix
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 
@@ -263,6 +263,11 @@ let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
 let g:airline#extensions#ale#enabled = 1
+
+" Do not lint or fix minified files.
+let g:ale_pattern_options = {
+    \ '\.py$': {'ale_fixers': ['isort', 'autopep8']},
+\}
 
 " ==================== Deoplete ======================
 let g:deoplete#enable_at_startup = 1
