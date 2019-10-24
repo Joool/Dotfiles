@@ -44,6 +44,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'roxma/vim-hug-neovim-rpc'
   endif
 
+  " Snippets
+  Plug 'sirver/ultisnips'
+
   " Syntax themes
   Plug 'flazz/vim-colorschemes'
 
@@ -129,12 +132,10 @@ autocmd FileType help wincmd L
 
 " filetypes
 autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
-autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
 autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
-autocmd BufNewFile,BufRead *.py
-    \ setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent fileformat=unix
+autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent fileformat=unix
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 
@@ -264,9 +265,9 @@ let g:ale_set_quickfix = 1
 
 let g:airline#extensions#ale#enabled = 1
 
-" Do not lint or fix minified files.
+let g:ale_fix_on_save = 1
 let g:ale_pattern_options = {
-    \ '\.py$': {'ale_fixers': ['isort', 'autopep8']},
+\ '\.py$': {'ale_linters': ['flake8', 'pylint'], 'ale_fixers': ['autopep8', 'isort', 'yapf']},
 \}
 
 " ==================== Deoplete ======================
@@ -275,9 +276,22 @@ let g:deoplete#enable_at_startup = 1
 " ==================== SIGNIFY =======================
 let g:signify_vcs_list=['git']
 
-" ==================== Supertab ======================
+" " ==================== Supertab ======================
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
+" ==================== UltiSnips ===========================
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+"  
+let g:UltiSnipsExpandTrigger = '<c-q>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+"
+" vertically split ultisnips edit window
+let g:UltiSnipsEditSplit="vertical"
+
+"Open UltiSnips edit function
+nmap <leader>ue :UltiSnipsEdit<cr>
+"
 " ==================== FZF ===========================
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))

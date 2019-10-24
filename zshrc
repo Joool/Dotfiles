@@ -21,7 +21,7 @@ export UPDATE_ZSH_DAYS=7
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-plugins=(git homebrew docker docker-compose)
+plugins=(git docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -29,12 +29,18 @@ source $ZSH/oh-my-zsh.sh
 alias p="cd ~/projects"
 alias la="ls -la"
 alias bubu="brew update && brew upgrade"
+alias cp="rsync -ahP --inplace"
 
 # edit common stuff
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 alias resource="source ~/.zshrc"
 alias scratch='vim $(echo $TMPDIR)/scratch'
+
+# git slow fix
+__git_files () { 
+    _wanted files expl 'local files' _files     
+}
 
 # set neovim as standard
 alias vim='nvim'
@@ -55,7 +61,9 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
+
 eval "$(pyenv virtualenv-init -)"
+source "$(pyenv root)/completions/pyenv.zsh"
 
 # Rust
 export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
