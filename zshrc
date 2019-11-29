@@ -22,7 +22,7 @@ export ZSH=$HOME/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    ZSH_THEME="robbyrussell"
+    ZSH_THEME="bureau"
 else
     ZSH_THEME="crunch"
 fi
