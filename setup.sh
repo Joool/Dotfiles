@@ -19,10 +19,10 @@ delete_symlink_if_exist() {
 setup_symlinks()
 {
 
-    create_symlink_if_not_exist ~/.vimrc $(PWD)/vimrc
-    create_symlink_if_not_exist ~/.zshrc $(PWD)/zshrc
-    create_symlink_if_not_exist ~/.gitconfig $(PWD)/gitconfig
-    create_symlink_if_not_exist ~/.global_gitignore $(PWD)/global_gitignore
+    create_symlink_if_not_exist ~/.vimrc $(pwd)/vimrc
+    create_symlink_if_not_exist ~/.zshrc $(pwd)/zshrc
+    create_symlink_if_not_exist ~/.gitconfig $(pwd)/gitconfig
+    create_symlink_if_not_exist ~/.global_gitignore $(pwd)/global_gitignore
 }
 
 clean_symlinks()
@@ -59,6 +59,13 @@ setup_maxos()
     fi
 }
 
+create_directory() 
+{
+    if [[ ! -d $1 ]]; then
+        mkdir -p $1 
+    fi
+}
+
 install() {
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         setup_linx
@@ -69,6 +76,15 @@ install() {
     if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
+
+    NVIM_CONFIG_PATH="$HOME/.config/nvim/"
+    create_directory $NVIM_CONFIG_PATH
+
+    if [[ ! -f "$NVIM_CONFIG_PATH/init.vim" ]]; then
+        touch "$NVIM_CONFIG_PATH/init.vim"
+        echo "source ~/.vimrc" >> "$NVIM_CONFIG_PATH/init.vim"
+    fi
+
 
     setup_symlinks
 }
