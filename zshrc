@@ -1,6 +1,17 @@
 export PATH=/usr/local/bin:$PATH
-. $(brew --prefix)/etc/profile.d/z.sh
-alias j='z'
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    # ubuntu
+    alias auau="sudo apt update && sudo apt upgrade -y"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS 
+    if ! command -v brew 1>/dev/null 2>&1; then
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+    . $(brew --prefix)/etc/profile.d/z.sh
+    alias j='z'
+    alias bubu="brew update && brew upgrade"
+fi
 
 
 fpath+=~/.zfunc
@@ -27,7 +38,6 @@ source $ZSH/oh-my-zsh.sh
 # alias
 alias p="cd ~/projects"
 alias la="ls -la"
-alias bubu="brew update && brew upgrade"
 alias cp="rsync -ahP --inplace"
 
 # edit common stuff
@@ -42,34 +52,50 @@ __git_files () {
 }
 
 # set neovim as standard
-alias vim='nvim'
-alias vi='nvim'
+if command -v nvim 1>/dev/null 2>&1; then
+    alias vim='nvim'
+    alias vi='nvim'
 
-# set Editor
-export EDITOR='nvim'
+    # set Editor
+    export EDITOR='nvim'
+fi
 
 # Go
-export GOPATH="$HOME/projects/go"
-export GOBIN="$GOPATH/bin"
-export PATH="$PATH:$GOBIN"
+if command -v go 1>/dev/null 2>&1; then
+    export GOPATH="$HOME/projects/go"
+    export GOBIN="$GOPATH/bin"
+    export PATH="$PATH:$GOBIN"
+fi
 
 # Python
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+if ! command -v pyenv 1>/dev/null 2>&1; then
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+    eval "$(pyenv init -)"
+    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 fi
 
+
+eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 source "$(pyenv root)/completions/pyenv.zsh"
 
+
 # Rust
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-export RUSTC_WRAPPER=sccache
-export PATH="$PATH:~/.cargo/bin/racer" # explicitly add racer to the path
+if command -v rustc 1>/dev/null 2>&1; then
+    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+    export RUSTC_WRAPPER=sccache
+    export PATH="$PATH:~/.cargo/bin/racer" # explicitly add racer to the path
+fi
 
 # fzf 
+if ! command -v fzf 1>/dev/null 2>&1; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+fi
+
 export FZF_DEFAULT_OPTS='--height 40% --border'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
