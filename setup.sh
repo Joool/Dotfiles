@@ -16,6 +16,14 @@ delete_symlink_if_exist() {
     fi
 }
 
+create_directory() 
+{
+    if [[ ! -d $1 ]]; then
+        mkdir -p $1 
+    fi
+}
+
+
 setup_symlinks()
 {
 
@@ -59,13 +67,6 @@ setup_maxos()
     fi
 }
 
-create_directory() 
-{
-    if [[ ! -d $1 ]]; then
-        mkdir -p $1 
-    fi
-}
-
 install() {
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         setup_linx
@@ -86,6 +87,7 @@ install() {
     fi
 
 
+    create_directory "$HOME/projects"
     setup_symlinks
 }
 
