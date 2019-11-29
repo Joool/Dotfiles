@@ -267,7 +267,7 @@ let g:airline#extensions#ale#enabled = 1
 
 let g:ale_fix_on_save = 1
 let g:ale_pattern_options = {
-\ '\.py$': {'ale_linters': ['flake8', 'pylint'], 'ale_fixers': ['autopep8', 'isort', 'yapf']},
+\ '\.py$': {'ale_linters': ['pylint'], 'ale_fixers': ['autopep8', 'isort', 'yapf']},
 \}
 
 " ==================== Deoplete ======================

@@ -1,8 +1,7 @@
+export PATH=/usr/local/bin:$PATH
 . $(brew --prefix)/etc/profile.d/z.sh
 alias j='z'
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 fpath+=~/.zfunc
 # Path to your oh-my-zsh installation.
@@ -74,3 +73,5 @@ export PATH="$PATH:~/.cargo/bin/racer" # explicitly add racer to the path
 export FZF_DEFAULT_OPTS='--height 40% --border'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:$PATH
