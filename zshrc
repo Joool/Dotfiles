@@ -21,7 +21,11 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="crunch"
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    ZSH_THEME="robbyrussell"
+else
+    ZSH_THEME="crunch"
+fi
 
 # Uncomment the following line to change how often to auto-update (in days).
 export UPDATE_ZSH_DAYS=7
