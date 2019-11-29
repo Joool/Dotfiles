@@ -31,10 +31,6 @@ call plug#begin('~/.vim/plugged')
   " async linter
   Plug 'w0rp/ale'
 
-  " ctags 
-  Plug 'craigemery/vim-autotag'
-  Plug 'majutsushi/tagbar'
-
   " Autocomplete
   if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -339,9 +335,6 @@ nnoremap <silent> <leader>R :Rg<CR>
 nnoremap <silent> <leader>H :History:<CR>
 nnoremap <silent> <leader>h :History/<CR>
 
-"===================== Tags ==========================
-let g:autotagTagsFile=".tags"
-nnoremap <silent> <leader>t :TagbarToggle<CR>
 
 "===================== Rust ==========================
 " rustup component add rustfmt-preview --toolchain=nightly
