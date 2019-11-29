@@ -91,7 +91,7 @@ if command -v rustc 1>/dev/null 2>&1; then
 fi
 
 # fzf 
-if ! command -v fzf 1>/dev/null 2>&1; then
+if [[ -d " ~/.fzf/install" ]]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
 fi
