@@ -42,7 +42,12 @@ source $ZSH/oh-my-zsh.sh
 # alias
 alias p="cd ~/projects"
 alias la="ls -la"
-alias cp="rsync -ahP --inplace"
+alias cp="rsync -achP --inplace"
+alias find="fd"
+alias cat="bat"
+
+# man page coloring
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # edit common stuff
 alias vimrc="vim ~/.vimrc"

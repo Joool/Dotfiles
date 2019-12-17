@@ -43,13 +43,19 @@ clean_symlinks()
 
 setup_linx() 
 {
-    apt update && apt install zsh -y
-    if ! exists nvm; then
-        curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
-        chmod u+x nvim.appimage
-        ./nvim.appimage
-        rm ./nvim.appimage
-    fi
+    apt update 
+
+    OLDIFS=$IFS
+    IFS=','
+
+    for i in "nvim","nvim" "zsh","zsh" "fd","fd" "rg","ripgrep" "bat","bat"; do
+        set -- $i;
+        if ! exists $1; then
+            apt install $2 -y 
+        fi
+    done
+
+    IFS=$OLDIFS
 }
 
 setup_maxos()
@@ -58,13 +64,19 @@ setup_maxos()
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 
-    if ! exists nvim; then
-        brew install neovim
-    fi
+    brew update && brew upgrade
 
-    if ! exists zsh; then
-		brew install zsh
-    fi
+    OLDIFS=$IFS
+    IFS=','
+
+    for i in "nvim","nvim" "zsh","zsh" "fd","fd" "rg","ripgrep" "bat","bat"; do
+        set -- $i;
+        if ! exists $1; then
+            brew install $2
+        fi
+    done
+
+    IFS=$OLDIFS
 }
 
 install() {
