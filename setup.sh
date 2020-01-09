@@ -90,6 +90,8 @@ install() {
         sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
 
+    rm ~/.zshrc # remote default .zshrc installed by ohmyzsh
+
     NVIM_CONFIG_PATH="$HOME/.config/nvim/"
     create_directory $NVIM_CONFIG_PATH
 
