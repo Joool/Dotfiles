@@ -48,7 +48,7 @@ setup_linx()
     OLDIFS=$IFS
     IFS=','
 
-    for i in "nvim","neovim" "zsh","zsh" "fd","fd" "rg","ripgrep" "bat","bat"; do
+    for i in "nvim","neovim" "zsh","zsh" "fd","fd-find" "rg","ripgrep" "bat","bat"; do
         set -- $i;
         if ! exists $1; then
             sudo apt install $2 -y 
