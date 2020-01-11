@@ -43,15 +43,15 @@ clean_symlinks()
 
 setup_linx() 
 {
-    apt update 
+    sudo apt update 
 
     OLDIFS=$IFS
     IFS=','
 
-    for i in "nvim","nvim" "zsh","zsh" "fd","fd" "rg","ripgrep" "bat","bat"; do
+    for i in "nvim","neovim" "zsh","zsh" "fd","fd" "rg","ripgrep" "bat","bat"; do
         set -- $i;
         if ! exists $1; then
-            apt install $2 -y 
+            sudo apt install $2 -y 
         fi
     done
 
@@ -80,6 +80,7 @@ setup_maxos()
 }
 
 install() {
+    sudo -v # ask for sudo password upfront
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         setup_linx
     elif [[ "$OSTYPE" == "darwin"* ]]; then
