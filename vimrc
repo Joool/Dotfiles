@@ -131,7 +131,7 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
 autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
-autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent fileformat=unix
+autocmd BufNewFile,BufRead *.py setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab autoindent fileformat=unix
 
 autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
 
@@ -263,7 +263,7 @@ let g:airline#extensions#ale#enabled = 1
 
 let g:ale_fix_on_save = 1
 let g:ale_pattern_options = {
-\ '\.py$': {'ale_linters': ['pylint'], 'ale_fixers': ['autopep8', 'isort', 'yapf']},
+\ '\.py$': {'ale_linters': ['pylint'], 'ale_fixers': ['autopep8', 'isort']},
 \}
 
 " ==================== Deoplete ======================
