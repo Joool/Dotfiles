@@ -41,6 +41,17 @@ clean_symlinks()
     delete_symlink_if_exist ~/.global_gitignore 
 }
 
+install_neovim()
+{
+    pushd /tmp
+    git clone https://github.com/neovim/neovim.git
+    cd neovim && git checkout stable
+    apt-get install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip -y
+    make CMAKE_BUILD_TYPE=Release
+    make install
+    popd
+}
+
 setup_linx() 
 {
     sudo apt update 
@@ -48,12 +59,13 @@ setup_linx()
     OLDIFS=$IFS
     IFS=','
 
-    for i in "nvim","neovim" "zsh","zsh" "fd","fd-find" "rg","ripgrep" "bat","bat"; do
+    for i in "zsh","zsh" "fd","fd-find" "rg","ripgrep" "bat","bat"; do
         set -- $i;
         if ! exists $1; then
             sudo apt install $2 -y 
         fi
     done
+    install_neovim
 
     IFS=$OLDIFS
 }
